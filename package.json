@@ -24,5 +24,14 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
     "vite": "^5.0.10"
+  },
+  "files": ["dist"],
+  "main": "./dist/qordial.umd.cjs",
+  "module": "./dist/qordial.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qordial.js",
+      "require": "./dist/qordial.umd.cjs"
+    }
   }
 }
