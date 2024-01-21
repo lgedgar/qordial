@@ -1,8 +1,17 @@
 {
   "name": "qordial",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Generic-ish components for Q-Apps built with Vue.js",
+  "keywords": [
+    "Qortal",
+    "Q-Apps"
+  ],
   "type": "module",
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Lance Edgar",
+    "email": "lance@edbob.org"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +19,7 @@
   },
   "dependencies": {
     "pinia": "^2.1.7",
-    "vue": "^3.3.11"
+    "vue": "~3.3.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
