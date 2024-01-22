@@ -11,11 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - nothing yet
 
+## [0.1.2] - 2024-01-21
+
+### Added
+
+- Add common "auth" store.
+- Add plugin for Vue, with `authenticate()` method.
+
 ## [0.1.1] - 2024-01-21
 
 ### Added
 
 - Initial release as library with just a ServicePicker component.
 
-[unreleased]: https://github.com/lgedgar/qordial/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/lgedgar/qordial/compare/v0.2.1...HEAD
+[0.1.2]: https://github.com/lgedgar/qordial/compare/v0.1.2...v0.1.1
 [0.1.1]: https://github.com/lgedgar/qordial/releases/tag/v0.1.1
