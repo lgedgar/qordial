@@ -7,9 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### TODO
+### Added
 
-- nothing yet
+- New components:
+  - JsonModal
+  - NameInput
+  - PrettyBytes
+  - PrettyIdentifier
+  - PrettyTime
+  - ResourceDownloader
+- New methods on global $qordial plugin:
+  - confirmPublish
+  - fetchResourceBlob
+  - fetchResourceJSON
+  - fetchResourceMetadata
+  - fileToBase64
+  - formatBytes
+  - resourceExists
+- New dependencies:
+  - @wdns/vue-code-block
+  - moment
+  - vue-clipboard3
 
 ## [0.1.3] - 2024-01-22
 
