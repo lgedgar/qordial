@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New plugin methods:
+  - `objectToBase64()`
+
+### Changed
+
+- Deprecated `fetchResourceJSON()` method for plugin; renamed it to
+  `fetchResourceObject()` instead.
+
 ## [0.1.4] - 2024-01-23
 
 ### Added
