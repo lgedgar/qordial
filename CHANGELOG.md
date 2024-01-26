@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2024-01-25
+
 ### Added
 
 - New plugin methods:
@@ -60,7 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release as library with just a ServicePicker component.
 
-[unreleased]: https://github.com/lgedgar/qordial/compare/v0.1.4...HEAD
+[unreleased]: https://github.com/lgedgar/qordial/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/lgedgar/qordial/compare/v0.1.5...v0.1.4
 [0.1.4]: https://github.com/lgedgar/qordial/compare/v0.1.4...v0.1.3
 [0.1.3]: https://github.com/lgedgar/qordial/compare/v0.1.3...v0.1.2
 [0.1.2]: https://github.com/lgedgar/qordial/compare/v0.1.2...v0.1.1
