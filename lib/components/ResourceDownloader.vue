@@ -16,25 +16,41 @@ export default {
     methods: {
 
         async downloadResource(resource) {
-            let blob
 
+            // fetch blob
+            let blob
             try {
                 blob = await this.fetchResource(resource)
             } catch (error) {
-                alert("fetch error:\n\n" + JSON.stringify(error, null, 2))
+                if (error.error == 1401 && error.message) {
+                    alert(error.message)
+                } else {
+                    console.log(error)
+                    alert("fetchResource error:\n\n" + error)
+                }
                 return
             }
 
-            let mimeType
-            if (this.jsonServices.includes(resource.service)) {
-                // TODO: i was previously "pretty-formatting" the JSON here, but
-                // no longer think that is a good idea.  maybe should remove this
-                // altogether and force mime type sniffing?
-                mimeType = 'application/json'
-
-            } else {
-                mimeType = await this.sniffMimeType(resource)
+            // also need properties, for mimetype
+            let properties
+            try {
+                properties = await qortalRequest({
+                    action: 'GET_QDN_RESOURCE_PROPERTIES',
+                    service: resource.service,
+                    name: resource.name,
+                    identifier: resource.identifier,
+                })
+            } catch(error) {
+                if (error.error == 1401 && error.message) {
+                    alert(error.message)
+                } else {
+                    console.log(error)
+                    alert("properties error: \n\n" + error)
+                }
+                return
             }
+
+            const mimeType = properties.mimeType
             const extension = {
                 'application/json': 'json',
                 'image/gif': 'gif',
@@ -58,9 +74,30 @@ export default {
             // start tracking progress, to show user
             this.downloadProgressUpdate(resource)
 
-            // wait for the fetch to complete, then return blob
-            response = await response
+            // wait for the fetch to give us a blob
+            try {
+                response = await response
+            } catch (error) {
+                console.log(error)
+                alert("await fetch error:\n\n" + error)
+                throw new Error("and what about now")
+            }
             const blob = await response.blob()
+
+            // check properties to make sure fetch completed okay
+            // (this may throw an error in which case that bubbles up)
+            try {
+                await qortalRequest({
+                    action: 'GET_QDN_RESOURCE_PROPERTIES',
+                    service: resource.service,
+                    name: resource.name,
+                    identifier: resource.identifier,
+                })
+            } catch (error) {
+                this.downloading = false
+                throw error
+            }
+
             this.downloading = false
             return blob
         },
@@ -68,12 +105,19 @@ export default {
         async downloadProgressUpdate(resource) {
 
             // get current status
-            const response = await qortalRequest({
-                action: 'GET_QDN_RESOURCE_STATUS',
-                service: resource.service,
-                name: resource.name,
-                identifier: resource.identifier,
-            })
+            let response
+            try {
+                response = await qortalRequest({
+                    action: 'GET_QDN_RESOURCE_STATUS',
+                    service: resource.service,
+                    name: resource.name,
+                    identifier: resource.identifier,
+                })
+            } catch(error) {
+                console.log(error)
+                alert("status error:\n\n" + error)
+                return
+            }
 
             // update progress display
             this.downloadResourceStatus = response
@@ -82,16 +126,6 @@ export default {
             if (this.downloading) {
                 setTimeout(this.downloadProgressUpdate, 1000, resource)
             }
-        },
-
-        async sniffMimeType(resource) {
-            const response = await qortalRequest({
-                action: 'GET_QDN_RESOURCE_PROPERTIES',
-                service: resource.service,
-                name: resource.name,
-                identifier: resource.identifier,
-            })
-            return response?.mimeType
         },
 
         async saveFile(resource, blob, options) {
@@ -141,26 +175,24 @@ export default {
 
         <div v-if="downloadResourceStatus" style="white-space: nowrap;">
           <o-field label="Status" horizontal>
-            {{ downloadResourceStatus.status }}
-          </o-field>
-          <o-field label="ID" horizontal>
-            {{ downloadResourceStatus.id }}
-          </o-field>
-          <o-field label="Title" horizontal>
             {{ downloadResourceStatus.title }}
           </o-field>
           <o-field label="Description" horizontal>
             {{ downloadResourceStatus.description }}
           </o-field>
-          <o-field label="Local Chunk Count" horizontal>
+          <o-field label="Local Chunks" horizontal>
             {{ downloadResourceStatus.localChunkCount }}
           </o-field>
-          <o-field label="Total Chunk Count" horizontal>
+          <o-field label="Total Chunks" horizontal>
             {{ downloadResourceStatus.totalChunkCount }}
           </o-field>
           <o-field label="Percent Loaded" horizontal>
-            {{ downloadResourceStatus.percentLoaded }}
+            {{ Number(downloadResourceStatus.percentLoaded / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}
           </o-field>
+
+          <progress class="progress is-large"
+                    :value="downloadResourceStatus.localChunkCount"
+                    :max="downloadResourceStatus.totalChunkCount" />
         </div>
 
       </div>
