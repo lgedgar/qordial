@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New components:
+  - CopyableText
+
+### Changed
+
+- PrettyIdentifier component refactored to use CopyableText.
+
 ## [0.1.5] - 2024-01-25
 
 ### Added
