@@ -82,6 +82,13 @@ export default {
                 alert("await fetch error:\n\n" + error)
                 throw new Error("and what about now")
             }
+
+            // but no blob if resource not found
+            if (response.status == 404) {
+                this.downloading = false
+                throw new Error("Got a 404 trying to fetch resource!")
+            }
+
             const blob = await response.blob()
 
             // check properties to make sure fetch completed okay

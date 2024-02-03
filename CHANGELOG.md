@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New plguin methods:
+  - `fetchResourceText()`
+
 ### Changed
 
 - Improved display, error handling for ResourceDownloader component.
+- Throw error if plugin method `fetchResourceBlob()` returns 404 response.
+- Throw error if `ResourceDownloader` component receives a 404 response.
 
 ## [0.1.6] - 2024-01-27
 
