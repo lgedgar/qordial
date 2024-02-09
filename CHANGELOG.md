@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `fetchResourceListing()` plugin method, for fetching basic info.
+
 ### Changed
 
 - Use fallback `mimeType` if none can be derived, when saving resource as file.
