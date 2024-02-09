@@ -136,7 +136,7 @@ export default {
         },
 
         async saveFile(resource, blob, options) {
-            const mimeType = options?.mimeType
+            const mimeType = options?.mimeType || 'application/octet-stream'
             const extension = options?.extension || 'dat'
             const filename = options?.filename || `${resource.identifier || resource.name}.${extension}`
 
