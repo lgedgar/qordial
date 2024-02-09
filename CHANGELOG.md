@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use fallback `mimeType` if none can be derived, when saving resource as file.
+- Use `<span>` instead of `<div>` for root tag of `PrettyTime` component.
 
 ## [0.1.7] - 2024-02-05
 

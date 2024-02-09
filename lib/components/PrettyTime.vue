@@ -14,10 +14,10 @@ export default {
 </script>
 
 <template>
-  <div>
+  <span>
     <span v-if="value"
           :title="new Date(value)">
       {{ moment(value).fromNow() }}
     </span>
-  </div>
+  </span>
 </template>
