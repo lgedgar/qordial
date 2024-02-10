@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Added
+
+- Show basic resource info in download modal.
+- Add simply "retry" confirmation when fetching resource fails with 404.
+
 ## 0.1.8 - 2024-02-09
 
 ### Added

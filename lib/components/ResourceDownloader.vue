@@ -4,6 +4,7 @@ export default {
     data() {
         return {
             downloading: false,
+            downloadResourceInfo: {},
             downloadResourceStatus: null,
             jsonServices: [
                 'BLOG_COMMENT',
@@ -16,15 +17,20 @@ export default {
     methods: {
 
         async downloadResource(resource) {
+            this.downloadResourceInfo = resource
 
             // fetch blob
             let blob
             try {
                 blob = await this.fetchResource(resource)
             } catch (error) {
+                // TODO: how to avoid hard-coding the 1401 value?
                 if (error.error == 1401 && error.message) {
+                    // nb. this is presumably a "pertinent" message directly
+                    // from the core; show as-is to the user
                     alert(error.message)
                 } else {
+                    // TODO: idk what this is yet, will need to investigate
                     console.log(error)
                     alert("fetchResource error:\n\n" + error)
                 }
@@ -74,21 +80,36 @@ export default {
             // start tracking progress, to show user
             this.downloadProgressUpdate(resource)
 
-            // wait for the fetch to give us a blob
-            try {
-                response = await response
-            } catch (error) {
-                console.log(error)
-                alert("await fetch error:\n\n" + error)
-                throw new Error("and what about now")
+            let tryAgain = true
+            while (tryAgain) {
+
+                // wait for the fetch to give us a blob
+                try {
+                    response = await response
+                } catch (error) {
+                    // TODO: idk what might cause this yet, must investigate
+                    console.log(error)
+                    alert("await fetch error:\n\n" + error)
+                    throw error
+                }
+
+                // but no blob if resource not found
+                if (response.status == 404) {
+                    if (confirm("Download could not complete!\n\n"
+                                + "Try again?")) {
+                        response = fetch(url)
+                    } else {
+                        this.downloading = false
+                        throw new Error("404 not found")
+                    }
+
+                } else {
+                    // we got a blob, so no reason to try again
+                    tryAgain = false
+                }
             }
 
-            // but no blob if resource not found
-            if (response.status == 404) {
-                this.downloading = false
-                throw new Error("Got a 404 trying to fetch resource!")
-            }
-
+            // manifest the blob
             const blob = await response.blob()
 
             // check properties to make sure fetch completed okay
@@ -182,24 +203,37 @@ export default {
 
         <div v-if="downloadResourceStatus" style="white-space: nowrap;">
           <o-field label="Status" horizontal>
-            {{ downloadResourceStatus.title }}
+            <span>{{ downloadResourceStatus.title }}</span>
           </o-field>
           <o-field label="Description" horizontal>
-            {{ downloadResourceStatus.description }}
+            <span>{{ downloadResourceStatus.description }}</span>
           </o-field>
           <o-field label="Local Chunks" horizontal>
-            {{ downloadResourceStatus.localChunkCount }}
+            <span>{{ downloadResourceStatus.localChunkCount }}</span>
           </o-field>
           <o-field label="Total Chunks" horizontal>
-            {{ downloadResourceStatus.totalChunkCount }}
+            <span>{{ downloadResourceStatus.totalChunkCount }}</span>
           </o-field>
           <o-field label="Percent Loaded" horizontal>
-            {{ Number(downloadResourceStatus.percentLoaded / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}
+            <span>
+              {{ Number(downloadResourceStatus.percentLoaded / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) }}
+            </span>
           </o-field>
 
           <progress class="progress is-large"
                     :value="downloadResourceStatus.localChunkCount"
                     :max="downloadResourceStatus.totalChunkCount" />
+
+          <o-field label="Service" horizontal>
+            <span>{{ downloadResourceInfo.service }}</span>
+          </o-field>
+          <o-field label="Name" horizontal>
+            <span>{{ downloadResourceInfo.name }}</span>
+          </o-field>
+          <o-field label="Identifier" horizontal>
+            <span>{{ downloadResourceInfo.identifier }}</span>
+          </o-field>
+
         </div>
 
       </div>
