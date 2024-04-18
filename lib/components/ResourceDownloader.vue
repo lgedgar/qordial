@@ -197,7 +197,7 @@ export default {
              >
     <div class="card" style="min-width: 50rem;">
       <div class="card-header">
-        <div class="card-header-title">Download in progress...</div>
+        <div class="card-header-title">Resource Download</div>
       </div>
       <div class="card-content">
 
