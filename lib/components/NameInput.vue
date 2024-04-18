@@ -14,12 +14,16 @@ export default {
 
 <template>
   <div>
+
     <o-button v-if="!qordialAuthStore.address"
               variant="primary"
               @click="$qordial.authenticate()">
       please authenticate
     </o-button>
-    <o-input v-if="qordialAuthStore.address"
-             v-model="qordialAuthStore.username" disabled />
+
+    <span v-if="qordialAuthStore.address">
+      {{ qordialAuthStore.username }}
+    </span>
+
   </div>
 </template>
