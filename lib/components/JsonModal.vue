@@ -54,7 +54,11 @@ export default {
     <div class="card">
 
       <div class="card-header">
-        <div class="card-header-title">{{ title }}</div>
+        <div class="card-header-title">
+          <slot name="title">
+            <span>{{ title }}</span>
+          </slot>
+        </div>
       </div>
 
       <div class="card-content">
