@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 0.1.10 - 2024-04-28
+
+## Added
+
+- Add title slot for json-modal component.
+
 ## 0.1.9 - 2024-04-19
 
 ## Added
